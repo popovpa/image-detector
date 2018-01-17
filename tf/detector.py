@@ -5,6 +5,7 @@ import sys
 import tarfile
 import tensorflow as tf
 import zipfile
+import scipy.misc
 
 from collections import defaultdict
 from io import StringIO
@@ -104,3 +105,4 @@ with detection_graph.as_default():
                 line_thickness=2)
             plt.figure(figsize=IMAGE_SIZE)
             plt.imshow(image_np)
+            scipy.misc.imsave('outfile.jpg', image_np)
