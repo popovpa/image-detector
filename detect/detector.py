@@ -91,8 +91,8 @@ with detection_graph.as_default():
 
             # Our operations on the frame come here
 
-            img_cv = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            image_np = load_image_into_numpy_array(img_cv)
+            # img_cv = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            image_np = load_image_into_numpy_array(frame)
 
             image_np_expanded = np.expand_dims(image_np, axis=0)
             # Actual detection.
@@ -101,7 +101,7 @@ with detection_graph.as_default():
                 feed_dict={image_tensor: image_np_expanded})
             # Visualization of the results of a detection.
             vis_util.visualize_boxes_and_labels_on_image_array(
-                image_np,
+                frame,
                 np.squeeze(boxes),
                 np.squeeze(classes).astype(np.int32),
                 np.squeeze(scores),
@@ -110,7 +110,7 @@ with detection_graph.as_default():
                 line_thickness=2)
 
             # Display the resulting frame
-            cv2.imshow('Video', image_np)
+            cv2.imshow('frame', frame)
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
 
