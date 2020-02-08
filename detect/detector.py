@@ -1,10 +1,10 @@
-import os
 import sys
 
 # Import everything needed to edit video clips
 # import moviepy.editor as mp
 import cv2
 import numpy as np
+import os
 import tensorflow as tf
 
 # if tf.__version__ < '1.4.0':
@@ -14,16 +14,17 @@ import tensorflow as tf
 
 # This is needed since the notebook is stored in the object_detection folder.
 
-DATA_PATH = '/_data/tf/object_detect/'
+DATA_PATH = '/Projects/image-detector/data/'
 
 sys.path.append(DATA_PATH)
 
 from utils import label_map_util
 from utils import visualization_utils as vis_util
+
 # from utils import ops as utils_ops
 
-MODEL_NAME = 'mask_rcnn_resnet50_atrous_coco_2018_01_28'
-# MODEL_NAME = 'ssd_mobilenet_v1_coco_2018_01_28'
+MODEL_NAME = 'ssd_mobilenet_v1_coco_2017_11_17'
+# MODEL_NAME = 'ssd_mobilenet_v1_coco_2017_11_17'
 MODEL_FILE = DATA_PATH + MODEL_NAME + '.tar.gz'
 DOWNLOAD_BASE = 'http://download.tensorflow.org/models/object_detection/'
 
@@ -31,7 +32,7 @@ DOWNLOAD_BASE = 'http://download.tensorflow.org/models/object_detection/'
 PATH_TO_CKPT = DATA_PATH + MODEL_NAME + '/frozen_inference_graph.pb'
 
 # List of the strings that is used to add correct label for each box.
-PATH_TO_LABELS = os.path.join('data', 'mscoco_label_map.pbtxt')
+PATH_TO_LABELS = DATA_PATH+'labels/'+'mscoco_label_map.pbtxt'
 
 NUM_CLASSES = 90
 
@@ -86,7 +87,7 @@ with detection_graph.as_default():
             num_detections = detection_graph.get_tensor_by_name('num_detections:0')
 
             # masks tensor
-            detection_masks_tensor = detection_graph.get_tensor_by_name('detection_masks:0')
+            # detection_masks_tensor = detection_graph.get_tensor_by_name('detection_masks:0')
 
             # clip = mp.VideoFileClip("test_images/video.mp4").subclip(2, 5).resize(height=180)
 
@@ -108,7 +109,7 @@ with detection_graph.as_default():
                 image_np_expanded = np.expand_dims(image_np, axis=0)
 
                 # detection_boxes = tf.squeeze(detection_boxes, [0])
-                #detection_masks = tf.squeeze(detection_masks_tensor, [0])
+                # detection_masks = tf.squeeze(detection_masks_tensor, [0])
                 # # Reframe is required to translate mask from box coordinates to image coordinates and fit the image size
                 # real_num_detection = tf.cast(num_detections[0], tf.int32)
                 # detection_boxes = tf.slice(detection_boxes, [0, 0], [real_num_detection, -1])
@@ -121,12 +122,12 @@ with detection_graph.as_default():
                 # detection_masks = tf.expand_dims(detection_masks_reframed, 0)
 
                 # if cnt % 5 == 0:
-                #(boxes, scores, classes, num, masks) = sess.run(
+                # (boxes, scores, classes, num, masks) = sess.run(
                 (boxes, scores, classes, num) = sess.run(
                     [detection_boxes, detection_scores, detection_classes, num_detections],  # , detection_masks],
                     feed_dict={image_tensor: image_np_expanded})
 
-                #detection_masks = tf.squeeze(detection_masks, [0])
+                # detection_masks = tf.squeeze(detection_masks, [0])
 
                 # Visualization of the results of a detection.
                 vis_util.visualize_boxes_and_labels_on_image_array(
@@ -136,7 +137,7 @@ with detection_graph.as_default():
                     np.squeeze(scores),
                     category_index,
                     # masks overlay
-                    #instance_masks=masks[0],
+                    # instance_masks=masks[0],
                     use_normalized_coordinates=True,
                     line_thickness=2)
 
