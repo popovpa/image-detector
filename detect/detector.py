@@ -14,7 +14,7 @@ import tensorflow as tf
 
 # This is needed since the notebook is stored in the object_detection folder.
 
-DATA_PATH = '/Projects/image-detector/data/'
+DATA_PATH = '/Users/pavel/Projects/image-detector/data/'
 
 sys.path.append(DATA_PATH)
 
